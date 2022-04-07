@@ -24,7 +24,6 @@ describe("product", () => {
         this.product_spending = $("#pp_products_spending");
         this.product_investing = $("#pp_products_investing");
         this.product_borrowing = $("#menu-borrowing");
-
         
         this.product_saving_text = this.product_saving.getText();
         this.product_spending_text = this.product_spending.getText();
@@ -41,22 +40,18 @@ describe("product", () => {
     it("save_screenshots", async () => {
 
         // get the href link under #pp_products_saving, click url and save screenshot
-        // let saving_page_link = await this.product_saving.getAttribute("href");
         await browser.url(await this.saving_page_link);
         await browser.saveFullPageScreen(await this.product_saving_text, {});
 
         // get the href link under #pp_products_spending, click url and save screenshot
-        // let spending_page_link = await this.product_spending.getAttribute("href");
         await browser.url(await this.spending_page_link);
         await browser.saveFullPageScreen(await this.product_spending_text, {});
 
         // get the href link under #pp_products_investing, click url and save screenshot
-        // let investing_page_link = await this.product_investing.getAttribute("href");
         await browser.url(await this.investing_page_link);
         await browser.saveFullPageScreen(await this.product_investing_text, {});
 
         // get the href link under #menu-borrowing, click url and save screenshot
-        // let borrowing_page_link = await this.product_borrowing.getAttribute("href");
         await browser.url(await this.borrowing_page_link);
         await browser.saveFullPageScreen(await this.product_borrowing_text, {});
 
@@ -64,19 +59,15 @@ describe("product", () => {
 
     it("should compare successful with baseline", async () => {
 
-        // let saving_page_link = await this.product_saving.getAttribute("href");
         await browser.url(await this.saving_page_link);
         await expect(await browser.checkFullPageScreen(await this.product_saving_text, {})).toEqual(0);
 
-        // let spending_page_link = await this.product_spending.getAttribute("href");
         await browser.url(await this.spending_page_link);
         await expect(await browser.checkFullPageScreen(await this.product_spending_text, {})).toEqual(0);
 
-        // let investing_page_link = await this.product_investing.getAttribute("href");
         await browser.url(await this.investing_page_link);
         await expect(await browser.checkFullPageScreen(await this.product_investing_text, {})).toEqual(0);
 
-        // let borrowing_page_link = await this.product_borrowing.getAttribute("href");
         await browser.url(await this.borrowing_page_link);
         await expect(await browser.checkFullPageScreen(await this.product_borrowing_text, {})).toEqual(0);
 

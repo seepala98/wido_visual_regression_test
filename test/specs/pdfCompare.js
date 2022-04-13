@@ -1,7 +1,10 @@
-var download = require('download');v
+var download = require('download');
 const comparePdf = require("compare-pdf");
 const chai = require("chai");
+const fs = require("fs");
+const request = require("request-promise-native");
 const expect = chai.expect;
+const path = require('path');
 
 const config = {
     paths: {
@@ -19,14 +22,27 @@ const config = {
     },
 }
 
+async function downloadPDF(pdfURL, actualPdfDirectory) {
+    const file_location = path.join(actualPdfDirectory, pdfURL.split("/").pop());
+    let pdfBuffer = await request.get({uri: pdfURL, encoding: null});
+    console.log("Writing downloaded PDF file to " + file_location + "...");
+    fs.writeFileSync(file_location, pdfBuffer);
+}
+
+const actualPdfLocation = "data//actualPdfs"
+const pdf_links = ["https://www.ieee.org/content/dam/ieee-org/ieee/web/org/pubs/ecf_faq.pdf"];
+
+pdf_links.forEach(async (pdf_link) => {
+    await downloadPDF(pdf_link, actualPdfLocation);
+});
+
 describe("Compare Pdf Tests", () => {
 
     it("Should be able to compare pdfs by image", async () => {
         let comparisonResults = await new comparePdf(config)
-            .actualPdfFile("COMP8117_individual_report")
+            .actualPdfFile("ecf_faq")
             .baselinePdfFile("baseline")
             .compare();
-        console.log("comparisonResults.status: ", comparisonResults.status);
         expect(comparisonResults.status).to.equal("failed");
     });
 
@@ -35,7 +51,6 @@ describe("Compare Pdf Tests", () => {
             .actualPdfFile("same")
             .baselinePdfFile("baseline")
             .compare();
-        console.log("comparisonResults.status: ", comparisonResults.status);
         expect(comparisonResults.status).to.equal("passed");
     });
 });
